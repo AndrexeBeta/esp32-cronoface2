@@ -1,0 +1,31 @@
+pipeline {
+  agent any
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Instalar PlatformIO') {
+      steps {
+        bat 'pip install platformio'
+      }
+    }
+
+    stage('Verificar PlatformIO') {
+      steps {
+        bat 'pio --version'
+      }
+    }
+
+    stage('Compilar ESP32') {
+      steps {
+        dir('Cronoface') {
+          bat 'pio run'
+        }
+      }
+    }
+  }
+}
