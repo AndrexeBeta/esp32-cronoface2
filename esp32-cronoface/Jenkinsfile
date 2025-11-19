@@ -1,31 +1,26 @@
 pipeline {
-  agent any
+    agent any
 
-  stages {
-    stage('Checkout') {
-      steps {
-        checkout scm
-      }
-    }
-
-    stage('Instalar PlatformIO') {
-      steps {
-        bat 'pip install platformio'
-      }
-    }
-
-    stage('Verificar PlatformIO') {
-      steps {
-        bat 'pio --version'
-      }
-    }
-
-    stage('Compilar ESP32') {
-      steps {
-        dir('Cronoface') {
-          bat 'pio run'
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/AndrexeBeta/esp32-cronoface.git'
+            }
         }
-      }
+
+        stage('Install PlatformIO') {
+            steps {
+                bat 'pip install platformio'
+            }
+        }
+
+        stage('Compile Firmware') {
+            steps {
+                dir('Cronoface') {        // carpeta donde está platformio.ini
+                    bat 'pio run'
+                }
+            }
+        }
     }
-  }
 }
